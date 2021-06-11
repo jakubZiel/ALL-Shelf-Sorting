@@ -1,9 +1,7 @@
 #include <iostream>
-
 #include "algorithms/BruteForce.h"
-
-int main() {
-
+#include "input_generator/input_generator.h"
+void test_brute_force(){
     std::vector<int> test = {3,0,0,0,3};
 
     std::vector<int> shelf = {2,2,3,3,3,3,3,3,3,2,0,3,2,2,2};
@@ -21,7 +19,18 @@ int main() {
     auto result = brute.sort();
 
     brute.showStepByStep(result);
-
-    return 0;
-
 }
+void test_input_generator(){
+    InputGenerator inputGenerator(15);
+    inputGenerator.gen_same_next(0.8);
+    auto color_vector = inputGenerator.get_color_vector();
+    for (int i = 0; i< 15; i++){
+        std::cout<<color_vector[i]<<std::endl;
+    }
+}
+
+int main() {
+    test_input_generator();
+    return 0;
+}
+
