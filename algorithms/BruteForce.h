@@ -8,6 +8,7 @@
 #include <boost/container_hash/hash.hpp>
 #include <queue>
 #include <unordered_map>
+#include <chrono>
 
 struct node{
     std::vector<int> shelf;
@@ -18,6 +19,10 @@ class BruteForce {
 
     bool sorted = false;
 
+    std::chrono::time_point<std::chrono::system_clock> startTime;
+    std::chrono::time_point<std::chrono::system_clock> endTime;
+
+
     std::vector<int> shelf;
     std::queue<node> queue;
     std::unordered_map<size_t, node> visited;
@@ -26,6 +31,7 @@ class BruteForce {
 
     node bfs();
     static void move(std::vector<int>& shelfNode, int pos);
+    std::vector<int> restoreState(std::vector<int>& moves);
 
 public:
     explicit BruteForce(size_t size);

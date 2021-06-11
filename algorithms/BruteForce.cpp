@@ -61,6 +61,7 @@ node BruteForce::bfs() {
 
 node BruteForce::sort() {
 
+
     node root;
     root.shelf = shelf;
     root.moves.clear();
@@ -106,7 +107,10 @@ void BruteForce::move(std::vector<int>& shelfNode, int pos) {
     shelfNode[size - 1] = D;
 }
 
+
 void BruteForce::showStepByStep(vector<int> &moves) {
+    cout << "visited configurations : " << visited.size() << endl;
+    cout << "calculation time : " << std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime).count() << endl;
 
     printShelf(shelf);
 
@@ -121,10 +125,10 @@ void BruteForce::showStepByStep(vector<int> &moves) {
 void BruteForce::printShelf(vector<int> &shelf){
 
     for (auto element : shelf){
-        std::cout << element;
+        cout << element;
     }
 
-    std::cout << std::endl;
+    cout << endl;
 }
 
 void BruteForce::printIndicator(int pos, int size){
@@ -138,3 +142,13 @@ void BruteForce::printIndicator(int pos, int size){
     std::cout << std::endl;
 }
 
+vector<int> BruteForce::restoreState(vector<int> &moves) {
+
+    vector<int> restored = shelf;
+
+    for (auto currMove : moves){
+        move(restored, currMove);
+    }
+
+    return restored;
+}
