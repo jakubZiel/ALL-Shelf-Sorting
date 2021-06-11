@@ -26,49 +26,55 @@ BruteForce::BruteForce(std::vector<int> &shelf) {
         counter[i]++;
 }
 
-node BruteForce::bfs() {
+vector<int> BruteForce::bfs() {
 
 
     if (queue.empty()){
-        node empty;
+        vector<int> empty;
         return empty;
     }
 
-    node current = queue.front();
+    vector<int> current = queue.front();
     queue.pop();
 
-    if (isSorted(current.shelf)){
+    vector<int> currentShelfState = restoreState(current);
+
+    if (isSorted(currentShelfState)){
         sorted = true;
         return current;
     }
 
-    for (int pos = 0; pos < current.shelf.size() - 4; pos++){
+    for (int pos = 0; pos < currentShelfState.size() - 4; pos++){
+
+        vector<int> newNode = current;
+        newNode.push_back(pos);
+
+        vector<int> newShelfState = restoreState(newNode);
 
 
-        node newNode = current;
-        newNode.moves.push_back(pos);
-
-        move(newNode.shelf, pos);
-
-        if (visited.find(hash_value(newNode.shelf)) == visited.end()){
-            visited.insert({hash_value(newNode.shelf), newNode});
+        if (visited.find(hash_value(newShelfState)) == visited.end()){
+            visited.insert({hash_value(newShelfState), newNode});
             queue.push(newNode);
+            visitedCount++;
         }
     }
 
     return bfs();
 }
 
-node BruteForce::sort() {
+vector<int> BruteForce::sort() {
 
-    node root;
-    root.shelf = shelf;
-    root.moves.clear();
+    startTime = std::chrono::system_clock::now();
+    vector<int> root;
 
     queue.push(root);
-    visited.insert({boost::hash_value(root.shelf), root});
+    visited.insert({boost::hash_value(shelf), root});
 
-    return bfs();
+    auto result = bfs();
+
+    endTime = std::chrono::system_clock::now();
+
+    return result;
 }
 
 
@@ -106,7 +112,10 @@ void BruteForce::move(std::vector<int>& shelfNode, int pos) {
     shelfNode[size - 1] = D;
 }
 
+
 void BruteForce::showStepByStep(vector<int> &moves) {
+    cout << "visited configurations : " << visited.size() << endl;
+    cout << "calculation time : " << std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count() << endl;
 
     printShelf(shelf);
 
@@ -121,10 +130,10 @@ void BruteForce::showStepByStep(vector<int> &moves) {
 void BruteForce::printShelf(vector<int> &shelf){
 
     for (auto element : shelf){
-        std::cout << element;
+        cout << element;
     }
 
-    std::cout << std::endl;
+    cout << endl;
 }
 
 void BruteForce::printIndicator(int pos, int size){
@@ -138,3 +147,13 @@ void BruteForce::printIndicator(int pos, int size){
     std::cout << std::endl;
 }
 
+vector<int> BruteForce::restoreState(vector<int> &moves) {
+
+    vector<int> restored = shelf;
+
+    for (auto currMove : moves){
+        move(restored, currMove);
+    }
+
+    return restored;
+}
