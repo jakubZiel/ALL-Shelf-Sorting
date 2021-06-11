@@ -26,48 +26,49 @@ BruteForce::BruteForce(std::vector<int> &shelf) {
         counter[i]++;
 }
 
-node BruteForce::bfs() {
+vector<int> BruteForce::bfs() {
 
 
     if (queue.empty()){
-        node empty;
+        vector<int> empty;
         return empty;
     }
 
-    node current = queue.front();
+    vector<int> current = queue.front();
     queue.pop();
 
-    if (isSorted(current.shelf)){
+    vector<int> currentState = restoreState(current);
+
+    if (isSorted(currentState)){
         sorted = true;
         return current;
     }
 
-    for (int pos = 0; pos < current.shelf.size() - 4; pos++){
+    for (int pos = 0; pos < currentState.size() - 4; pos++){
+
+        vector<int> newNode = current;
+        newNode.push_back(pos);
+
+        vector<int> newState = restoreState(newNode);
 
 
-        node newNode = current;
-        newNode.moves.push_back(pos);
-
-        move(newNode.shelf, pos);
-
-        if (visited.find(hash_value(newNode.shelf)) == visited.end()){
-            visited.insert({hash_value(newNode.shelf), newNode});
+        if (visited.find(hash_value(newState)) == visited.end()){
+            visited.insert({hash_value(newState), newNode});
             queue.push(newNode);
+            visitedCount++;
         }
     }
 
     return bfs();
 }
 
-node BruteForce::sort() {
+vector<int> BruteForce::sort() {
 
 
-    node root;
-    root.shelf = shelf;
-    root.moves.clear();
+    vector<int> root;
 
     queue.push(root);
-    visited.insert({boost::hash_value(root.shelf), root});
+    visited.insert({boost::hash_value(shelf), root});
 
     return bfs();
 }
