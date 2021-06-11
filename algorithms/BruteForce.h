@@ -17,7 +17,7 @@ struct node{
 class BruteForce {
 
     bool sorted = false;
-
+    int visitedCount = 0;
     std::vector<int> shelf;
     std::queue<node> queue;
     std::unordered_map<size_t, node> visited;
