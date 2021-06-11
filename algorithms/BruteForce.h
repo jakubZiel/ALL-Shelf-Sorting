@@ -7,25 +7,35 @@
 
 #include <boost/container_hash/hash.hpp>
 #include <queue>
+#include <unordered_map>
+
+struct node{
+    std::vector<int> shelf;
+    std::vector<int> moves;
+};
 
 class BruteForce {
 
+    bool sorted = false;
+
     std::vector<int> shelf;
-    std::queue<std::vector<int>> queue;
-    std::map<int, std::vector<int>> visited;
+    std::queue<node> queue;
+    std::unordered_map<size_t, node> visited;
 
     int counter[4]{0, 0, 0, 0};
 
-    void bfs();
-    void move(std::vector<int> shelfNode, int pos);
+    node bfs();
+    static void move(std::vector<int>& shelfNode, int pos);
 
 public:
     explicit BruteForce(size_t size);
     explicit BruteForce(std::vector<int> &shelf);
 
-    void sort();
+    node sort();
     bool isSorted(std::vector<int> &shelfNode);
-
+    void showStepByStep(std::vector<int> &moves);
+    static void printShelf(std::vector<int> &shelf);
+    static void printIndicator(int pos, int size);
 };
 
 
