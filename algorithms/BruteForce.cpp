@@ -27,48 +27,55 @@ BruteForce::BruteForce(std::vector<int> &shelf) {
 }
 
 vector<int> BruteForce::bfs() {
+    vector<int> root;
+
+    queue.push(root);
+    visited.insert({boost::hash_value(shelf)});
 
 
-    if (queue.empty()){
-        vector<int> empty;
-        return empty;
-    }
+    while(!queue.empty()){
 
-    vector<int> current = queue.front();
-    queue.pop();
+        vector<int> current = queue.front();
+        queue.pop();
+        queuedCount--;
 
-    vector<int> currentShelfState = restoreState(current);
+        vector<int> currentShelfState = restoreState(current);
 
-    if (isSorted(currentShelfState)){
-        sorted = true;
-        return current;
-    }
+        if (isSorted(currentShelfState)){
+            sorted = true;
+            return current;
+        }
 
-    for (int pos = 0; pos < currentShelfState.size() - 4; pos++){
+        for (int pos = 0; pos < currentShelfState.size() - 4; pos++){
 
-        vector<int> newNode = current;
-        newNode.push_back(pos);
+            vector<int> newNode = current;
+            newNode.push_back(pos);
 
-        vector<int> newShelfState = restoreState(newNode);
+            vector<int> newShelfState = restoreState(newNode);
 
+            if (visited.find(hash_value(newShelfState)) == visited.end()){
+                visited.insert({hash_value(newShelfState)});
+                queue.push(newNode);
+                visitedCount++;
+                queuedCount++;
 
-        if (visited.find(hash_value(newShelfState)) == visited.end()){
-            visited.insert({hash_value(newShelfState), newNode});
-            queue.push(newNode);
-            visitedCount++;
+                if (visitedCount % 100000 == 0)
+                    std::cout << visitedCount << std::endl;
+            }
         }
     }
 
-    return bfs();
+    vector<int> notFound;
+    return notFound;
 }
+
+
+
+
 
 vector<int> BruteForce::sort() {
 
     startTime = std::chrono::system_clock::now();
-    vector<int> root;
-
-    queue.push(root);
-    visited.insert({boost::hash_value(shelf), root});
 
     auto result = bfs();
 

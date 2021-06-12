@@ -7,7 +7,7 @@
 
 #include <boost/container_hash/hash.hpp>
 #include <queue>
-#include <unordered_map>
+#include <unordered_set>
 #include <chrono>
 
 struct node{
@@ -19,18 +19,19 @@ class BruteForce {
 
     bool sorted = false;
     int visitedCount = 0;
+    int queuedCount = 0;
     std::chrono::time_point<std::chrono::system_clock> startTime;
     std::chrono::time_point<std::chrono::system_clock> endTime;
 
 
     std::vector<int> shelf;
     std::queue<std::vector<int>> queue;
-    std::unordered_map<size_t, std::vector<int>> visited;
+    std::unordered_set<size_t> visited;
 
     int counter[4]{0, 0, 0, 0};
 
-    std::vector<int> bfs();
     static void move(std::vector<int>& shelfNode, int pos);
+    std::vector<int> bfs();
 
 public:
 
@@ -43,7 +44,6 @@ public:
     static void printShelf(std::vector<int> &shelf);
     static void printIndicator(int pos, int size);
     std::vector<int> restoreState(std::vector<int>& moves);
-
 };
 
 
