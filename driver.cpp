@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
         float probability;
 
         int size;
-        std::cout << "Do you want to use default test set {100, 200, 500, 1000, 2000} (0/1)?" << std::endl;
+        std::cout << "Do you want to use default test set {300, 400, 600, 800, 1000, 2000, 5000} (0/1)?" << std::endl;
 
         bool defaultSet;
         std::cin >> defaultSet;

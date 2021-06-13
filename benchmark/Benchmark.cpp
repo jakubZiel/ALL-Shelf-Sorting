@@ -41,17 +41,16 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
     if (algorithm == BRUTE){
 
         if (shelf.size() < 20){
-        bruteForce = BruteForce(shelf);
+            bruteForce = BruteForce(shelf);
 
-        startTime = chrono::system_clock::now();
-        info.moves = bruteForce.sort();
+            startTime = chrono::system_clock::now();
+            info.moves = bruteForce.sort();
 
-        endTime = chrono::system_clock::now();
+            endTime = chrono::system_clock::now();
 
-        result = bruteForce.restoreState(info.moves);
+            result = bruteForce.restoreState(info.moves);
 
-        info.sorted = validate(result);
-
+            info.sorted = validate(result);
         }
     }else{
 
@@ -78,7 +77,6 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
         result = baseAlgorithm->_get_sorted_shelf();
 
         info.sorted = validate(result);
-
     }
     auto calculationTime = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
     info.calcTime = calculationTime.count();
@@ -153,7 +151,7 @@ void Benchmark::calculateQuality() {
     if (problemSizes.size() % 2 == 0)
         medianN = (problemSizes[problemSizes.size() / 2] + problemSizes[problemSizes.size() / 2  + 1]) / 2;
     else
-        medianN = problemSizes[(problemSizes.size() + 1) / 2];
+        medianN = problemSizes[(problemSizes.size() ) / 2];
 
     for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
 
