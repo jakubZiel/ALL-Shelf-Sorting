@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include "base_algorithm.h"
 
 /**
