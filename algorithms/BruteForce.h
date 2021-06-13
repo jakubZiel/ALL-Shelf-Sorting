@@ -44,9 +44,6 @@ public:
 
     std::vector<int> sort();
     bool isSorted(std::vector<int> &shelfNode);
-    void showStepByStep(std::vector<int> &moves);
-    static void printShelf(std::vector<int> &shelf);
-    static void printIndicator(int pos, int size);
     std::vector<int> restoreState(std::vector<int>& moves);
     bool getSorted();
 
