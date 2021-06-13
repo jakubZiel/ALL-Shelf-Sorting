@@ -10,11 +10,6 @@
 #include <unordered_set>
 #include <chrono>
 
-struct node{
-    std::vector<int> shelf;
-    std::vector<int> moves;
-};
-
 class BruteForce {
 
     bool sorted = false;
@@ -44,9 +39,6 @@ public:
 
     std::vector<int> sort();
     bool isSorted(std::vector<int> &shelfNode);
-    void showStepByStep(std::vector<int> &moves);
-    static void printShelf(std::vector<int> &shelf);
-    static void printIndicator(int pos, int size);
     std::vector<int> restoreState(std::vector<int>& moves);
     bool getSorted();
 

@@ -9,6 +9,8 @@
 #include <iomanip>
 #include "algorithms/four_first_algorithm.h"
 #include "algorithms/naive.h"
+#include "algorithms/space_sort.h"
+
 
 using namespace std;
 
@@ -38,17 +40,18 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
 
     if (algorithm == BRUTE){
 
-        bruteForce = BruteForce(shelf);
+        if (shelf.size() < 20){
+            bruteForce = BruteForce(shelf);
 
-        startTime = chrono::system_clock::now();
-        info.moves = bruteForce.sort();
+            startTime = chrono::system_clock::now();
+            info.moves = bruteForce.sort();
 
-        endTime = chrono::system_clock::now();
+            endTime = chrono::system_clock::now();
 
-        result = bruteForce.restoreState(info.moves);
+            result = bruteForce.restoreState(info.moves);
 
-        info.sorted = validate(result);
-
+            info.sorted = validate(result);
+        }
     }else{
 
         switch (algorithm) {
@@ -59,6 +62,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
                 baseAlgorithm = make_unique<FourFirst>(shelf);
                 break;
             case FAST:
+                baseAlgorithm = make_unique<SpaceSort>(shelf);
                 break;
             default:
                 break;
@@ -73,7 +77,6 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
         result = baseAlgorithm->_get_sorted_shelf();
 
         info.sorted = validate(result);
-
     }
     auto calculationTime = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
     info.calcTime = calculationTime.count();
@@ -148,7 +151,7 @@ void Benchmark::calculateQuality() {
     if (problemSizes.size() % 2 == 0)
         medianN = (problemSizes[problemSizes.size() / 2] + problemSizes[problemSizes.size() / 2  + 1]) / 2;
     else
-        medianN = problemSizes[(problemSizes.size() + 1) / 2];
+        medianN = problemSizes[(problemSizes.size() ) / 2];
 
     for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
 
@@ -173,7 +176,7 @@ void Benchmark::printTestInfo(){
         if (algorithm == FAST)
             cout << "Fast algorithm - fast O(n^3)" << endl;
 
-        cout << "size   |   time    |   q   |   sorted   |   moves" << endl;
+        cout << "size   |   time    |   q   |   sorted   |   moves" << endl << endl;
 
         for (auto beg = results[(Algorithm)algorithm].begin(); beg != results[(Algorithm)algorithm].end(); beg++){
 
@@ -315,6 +318,7 @@ void Benchmark::runUserInput() {
                     baseAlgorithm = make_unique<FourFirst>(problem);
                     break;
                 case FAST:
+                    baseAlgorithm = make_unique<SpaceSort>(problem);
                     break;
                 default:
                     break;
@@ -380,6 +384,7 @@ void Benchmark::runUser(){
                 baseAlgorithm = make_unique<FourFirst>(problems[0]);
                 break;
             case FAST:
+                baseAlgorithm = make_unique<SpaceSort>(problems[0]);
                 break;
         }
 

@@ -12,22 +12,28 @@ int main(int argc, char **argv) {
 
     if (strcmp("-testing", argv[1]) == 0){
 
-        std::vector<int> testSizes;
+        std::vector<int> testSizes = {300, 400, 600, 800, 1000, 2000, 5000};
         float probability;
 
         int size;
-        std::cout << "Choose test sizes, only unique sizes. (-1 to stop)." << std::endl;
+        std::cout << "Do you want to use default test set {300, 400, 600, 800, 1000, 2000, 5000} (0/1)?" << std::endl;
 
-        std::cin >> size;
+        bool defaultSet;
+        std::cin >> defaultSet;
 
-        while(true){
-            if (size < 0)
-                break;
-            else
-                testSizes.push_back(size);
+        if (!defaultSet) {
+            std::cout << "Choose test sizes, only unique sizes. (-1 to stop)." << std::endl;
+
             std::cin >> size;
-        }
 
+            while (true) {
+                if (size < 0)
+                    break;
+                else
+                    testSizes.push_back(size);
+                std::cin >> size;
+            }
+        }
         std::cout << "Choose probability of new element being identical to previous. (0. : 1.)" << std::endl;
         std::cin >> probability;
 

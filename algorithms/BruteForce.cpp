@@ -121,31 +121,6 @@ void BruteForce::move(std::vector<int>& shelfNode, int pos) {
     shelfNode[size - 1] = D;
 }
 
-
-void BruteForce::showStepByStep(vector<int> &moves) {
-
-}
-
-void BruteForce::printShelf(vector<int> &shelf){
-
-    for (auto element : shelf){
-        cout << element;
-    }
-
-    cout << endl;
-}
-
-void BruteForce::printIndicator(int pos, int size){
-    for (int i = 0; i < size; i++){
-        if (i == pos)
-            std::cout << "^";
-        else
-            std::cout << " ";
-    }
-
-    std::cout << std::endl;
-}
-
 vector<int> BruteForce::restoreState(vector<int> &moves) {
 
     vector<int> restored = shelf;
