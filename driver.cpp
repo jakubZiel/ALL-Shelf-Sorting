@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
     if (strcmp("-testing", argv[1]) == 0){
 
-        std::vector<int> testSizes = {100, 200, 500, 1000, 2000};
+        std::vector<int> testSizes = {300, 400, 600, 800, 1000, 2000, 5000};
         float probability;
 
         int size;
