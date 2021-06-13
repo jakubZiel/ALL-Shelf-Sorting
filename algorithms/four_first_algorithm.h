@@ -10,7 +10,6 @@ private:
     int _find_pattern(const int color, const int last_to_check_index);
 public:
     void sort();
-    void sort_2();
 
 };
 #endif //SHELF_SORTING_FOUR_FIRST_ALGORITHM_H

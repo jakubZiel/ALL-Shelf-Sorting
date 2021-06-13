@@ -234,18 +234,32 @@ void Base::_show_single_step() {
     }
     std::cout << ret << std::endl;
 }
+void Base::_show_single_step_copy() {
+    std::string ret = "";
+    for (int i = 0; i < _shelf_size; i++) {
+        if (_shelf_copy[i] == 0)
+            ret += "C";
+        else if (_shelf_copy[i] == 1)
+            ret += "M";
+        else if (_shelf_copy[i] == 2) {
+            ret += "Y";
+        } else if (_shelf_copy[i] == 3) {
+            ret += "K";
+        }
+    }
+    std::cout << ret << std::endl;
+}
 void Base::show_step_by_step() {
     int i = 0;
+    _show_single_step_copy();
     for (auto pos : _moves_history) {
-        _move_copy(pos);
-        std::cout << i++ << ") ";
-        _show_single_step();
         _print_indicator(pos);
+        _move_copy(pos);
+        _show_single_step_copy();
     }
 }
 
 void Base::_print_indicator(int current_index){
-    std::cout<<"   ";
     for (int i = 0; i < _shelf_size; i++){
         if (i == current_index)
             std::cout << "^";

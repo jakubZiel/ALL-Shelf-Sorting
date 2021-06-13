@@ -14,6 +14,7 @@ protected:
     std::vector<int> _moves_history;
     void _count_colors();
     void _show_single_step();
+    void _show_single_step_copy();
     void _print_indicator(int current_index);
 public:
     Base(std::vector<int> &shelf);
