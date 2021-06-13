@@ -9,6 +9,8 @@
 #include <iomanip>
 #include "algorithms/four_first_algorithm.h"
 #include "algorithms/naive.h"
+#include "algorithms/space_sort.h"
+
 
 using namespace std;
 
@@ -38,6 +40,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
 
     if (algorithm == BRUTE){
 
+        if (shelf.size() < 20){
         bruteForce = BruteForce(shelf);
 
         startTime = chrono::system_clock::now();
@@ -49,6 +52,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
 
         info.sorted = validate(result);
 
+        }
     }else{
 
         switch (algorithm) {
@@ -59,6 +63,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
                 baseAlgorithm = make_unique<FourFirst>(shelf);
                 break;
             case FAST:
+                baseAlgorithm = make_unique<SpaceSort>(shelf);
                 break;
             default:
                 break;
@@ -173,7 +178,7 @@ void Benchmark::printTestInfo(){
         if (algorithm == FAST)
             cout << "Fast algorithm - fast O(n^3)" << endl;
 
-        cout << "size   |   time    |   q   |   sorted   |   moves" << endl;
+        cout << "size   |   time    |   q   |   sorted   |   moves" << endl << endl;
 
         for (auto beg = results[(Algorithm)algorithm].begin(); beg != results[(Algorithm)algorithm].end(); beg++){
 
@@ -315,6 +320,7 @@ void Benchmark::runUserInput() {
                     baseAlgorithm = make_unique<FourFirst>(problem);
                     break;
                 case FAST:
+                    baseAlgorithm = make_unique<SpaceSort>(problem);
                     break;
                 default:
                     break;
@@ -380,6 +386,7 @@ void Benchmark::runUser(){
                 baseAlgorithm = make_unique<FourFirst>(problems[0]);
                 break;
             case FAST:
+                baseAlgorithm = make_unique<SpaceSort>(problems[0]);
                 break;
         }
 

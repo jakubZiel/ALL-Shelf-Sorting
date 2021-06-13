@@ -2,7 +2,6 @@
 #include "input_generator/input_generator.h"
 #include "benchmark/Benchmark.h"
 #include "algorithms/naive.h"
-#include "algorithms/four_first_algorithm.h"
 #include "algorithms/space_sort.h"
 
 void test_input_generator(){
