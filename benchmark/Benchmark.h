@@ -9,6 +9,7 @@
 #include <vector>
 #include "input_generator/input_generator.h"
 #include <unordered_map>
+#include <string>
 
 enum Algorithm{
     BRUTE, BASIC, PATTERN, FAST
@@ -45,6 +46,7 @@ class Benchmark {
     void move(std::vector<int>& shelfNode, int pos);
 
     void checkTestSteps();
+    void readData();
 
 public:
     Benchmark();

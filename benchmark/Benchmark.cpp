@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iomanip>
 
+
 using namespace std;
 
 Benchmark::Benchmark(): bruteForce(0){
@@ -270,13 +271,127 @@ void Benchmark::checkTestSteps() {
 }
 
 void Benchmark::runUserInput() {
+    readData();
 
+    string algorithm_s;
+    Algorithm algorithm;
+    test_info info;
+
+    cin >> algorithm_s;
+
+    if (algorithm_s == "BRUTE")
+        algorithm = BRUTE;
+
+    if (algorithm_s == "BASIC")
+        algorithm = BASIC;
+
+    if (algorithm_s == "PATTERN")
+        algorithm = PATTERN;
+
+    if (algorithm_s == "FAST")
+        algorithm = FAST;
+
+
+    vector<int> result;
+
+    for (auto &problem : problems){
+
+        if (algorithm == BRUTE){
+
+            bruteForce = BruteForce(problem);
+            info.moves = bruteForce.sort();
+            info.sorted = bruteForce.getSorted();
+
+        }else{
+
+
+        }
+
+        results[algorithm].insert(make_pair(problem.size(), info));
+    }
+
+    for (auto &problem : problems){
+
+        stepByStep(problem, results[algorithm][problem.size()].moves);
+        cout << endl << endl;
+
+    }
 
 }
 
 void Benchmark::runUser(){
 
+
+    float probability;
+    int size;
+    int algorithm;
+
+    std::cout << "Input probability of next element being same as previous one.(0. : 1.) :" << endl;
+    cin >> probability;
+
+    if (probability < 0 || probability > 1)
+        probability = 0.3;
+
+    std::cout << "Input size of test example : " << endl;
+    cin >> size;
+
+    if (size < 0)
+        size = 15;
+
+    problemSizes.push_back(size);
+    generateProblems(probability);
+
+
+    std::cout << "Input algorithm type : BRUTE, BASIC, PATTERN, FAST (0,1,2,3)" << endl;
+    cin >> algorithm;
+
+    if (algorithm > 3 || algorithm < 0)
+        algorithm = 1;
+
+    vector<int> moves;
+
+    switch (algorithm) {
+
+        case 0:
+            bruteForce = BruteForce(problems[0]);
+            moves = bruteForce.sort();
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+    }
+
+
+    cout << "Correction check : " << endl;
+
+    stepByStep(problems[0], moves);
 }
 
+void Benchmark::readData() {
+
+    vector<int> problem;
+
+    int numberOfProblems;
+    string shelf;
+
+    cin >> numberOfProblems;
+
+    for (int i = 0; i < numberOfProblems; i++){
+
+        cin >> shelf;
+
+        for (char c : shelf){
+
+            int element = atoi(&c);
+            problem.push_back(element);
+        }
+        problems.push_back(problem);
+        problemSizes.push_back(problem.size());
+        problem.clear();
+    }
+}
 
 

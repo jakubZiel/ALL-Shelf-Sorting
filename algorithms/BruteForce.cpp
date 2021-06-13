@@ -176,3 +176,7 @@ void BruteForce::setShelf(vector<int> &newShelf) {
     for (int i : shelf)
         counter[i]++;
 }
+
+bool BruteForce::getSorted() {
+    return sorted;
+}

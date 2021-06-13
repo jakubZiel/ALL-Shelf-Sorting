@@ -48,6 +48,7 @@ public:
     static void printShelf(std::vector<int> &shelf);
     static void printIndicator(int pos, int size);
     std::vector<int> restoreState(std::vector<int>& moves);
+    bool getSorted();
 
 };
 
