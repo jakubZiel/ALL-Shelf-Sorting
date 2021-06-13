@@ -45,7 +45,7 @@ class Benchmark {
     void generateProblems(float probability);
     void calculateQuality();
 
-    void stepByStep(std::vector<int> &shelf, std::vector<int> &moves);
+
     void printShelf(std::vector<int> &shelf);
     void printIndicator(int pos, int size);
     void move(std::vector<int>& shelfNode, int pos);
@@ -56,6 +56,7 @@ class Benchmark {
 public:
     Benchmark();
 
+    void stepByStep(std::vector<int> &shelf, std::vector<int> &moves);
     void printTestInfo();
     void runUserInput();
     void runUser();

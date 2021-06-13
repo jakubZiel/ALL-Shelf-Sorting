@@ -24,6 +24,6 @@ public:
     virtual void sort() = 0;
     void show_step_by_step();
     std::vector<int> _get_move_history();
-
+    std::vector<int> _get_sorted_shelf();
 };
 #endif //SHELF_SORTING_BASE_ALGORITHM_H

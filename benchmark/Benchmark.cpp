@@ -37,7 +37,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
     vector<int> result;
 
     if (algorithm == BRUTE){
-
+        /*
         bruteForce = BruteForce(shelf);
 
         startTime = chrono::system_clock::now();
@@ -48,16 +48,17 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
         result = bruteForce.restoreState(info.moves);
 
         info.sorted = validate(result);
+        */
     }else{
 
         switch (algorithm) {
-            case 1:
+            case BASIC:
                 baseAlgorithm = make_unique<Naive>(shelf);
                 break;
-            case 2:
+            case PATTERN:
                 baseAlgorithm = make_unique<FourFirst>(shelf);
                 break;
-            case 3:
+            case FAST:
                 break;
             default:
                 break;
@@ -68,7 +69,11 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
         endTime = chrono::system_clock::now();
 
         info.moves = baseAlgorithm->_get_move_history();
-        baseAlgorithm.
+
+        result = baseAlgorithm->_get_sorted_shelf();
+
+        info.sorted = validate(result);
+
     }
     auto calculationTime = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
     info.calcTime = calculationTime.count();

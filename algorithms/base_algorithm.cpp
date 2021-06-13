@@ -258,3 +258,9 @@ void Base::_print_indicator(int current_index){
 std::vector<int> Base::_get_move_history() {
     return _moves_history;
 }
+
+std::vector<int> Base::_get_sorted_shelf() {
+
+    std::vector<int> result(this->_shelf_tab, this->_shelf_tab + _shelf.size());
+    return result;
+}
