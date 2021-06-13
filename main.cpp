@@ -1,9 +1,10 @@
 #include <iostream>
-#include "algorithms/BruteForce.h"
 #include "input_generator/input_generator.h"
 #include "benchmark/Benchmark.h"
 #include "algorithms/naive.h"
 #include "algorithms/four_first_algorithm.h"
+
+
 void test_brute_force(){
     std::vector<int> test = {3,0,0,0,3};
 

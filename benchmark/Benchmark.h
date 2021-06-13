@@ -12,6 +12,9 @@
 #include <string>
 #include "algorithms/base_algorithm.h"
 #include <memory>
+#include <map>
+#include "algorithms/BruteForce.h"
+
 
 enum Algorithm{
     BRUTE, BASIC, PATTERN, FAST

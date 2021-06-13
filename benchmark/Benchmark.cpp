@@ -177,7 +177,7 @@ void Benchmark::printTestInfo(){
 
         for (auto beg = results[(Algorithm)algorithm].begin(); beg != results[(Algorithm)algorithm].end(); beg++){
 
-            cout << beg->first << "   "  << beg->second.calcTime << "   "  << fixed << setprecision(2)  << beg->second.qValue << "   " << (beg->second.sorted ? "true" : "false") << "   " << beg->second.moves.size() << endl;
+            cout << beg->first << "   "  << fixed << setprecision(0) << beg->second.calcTime << "   "  << fixed << setprecision(2)  << beg->second.qValue << "   " << (beg->second.sorted ? "true" : "false") << "   " << beg->second.moves.size() << endl;
         }
         cout << endl << endl;
     }
