@@ -37,7 +37,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
     vector<int> result;
 
     if (algorithm == BRUTE){
-        /*
+
         bruteForce = BruteForce(shelf);
 
         startTime = chrono::system_clock::now();
@@ -48,7 +48,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
         result = bruteForce.restoreState(info.moves);
 
         info.sorted = validate(result);
-        */
+
     }else{
 
         switch (algorithm) {
@@ -305,11 +305,22 @@ void Benchmark::runUserInput() {
 
             bruteForce = BruteForce(problem);
             info.moves = bruteForce.sort();
-            info.sorted = bruteForce.getSorted();
-
         }else{
+            switch (algorithm){
+                case BASIC:
+                    baseAlgorithm = make_unique<Naive>(problem);
+                    break;
+                case PATTERN:
+                    baseAlgorithm = make_unique<FourFirst>(problem);
+                    break;
+                case FAST:
+                    break;
+                default:
+                    break;
+            }
 
-
+            baseAlgorithm->sort();
+            info.moves = baseAlgorithm->_get_move_history();
         }
 
         results[algorithm].insert(make_pair(problem.size(), info));
@@ -355,19 +366,26 @@ void Benchmark::runUser(){
 
     vector<int> moves;
 
-    switch (algorithm) {
+    if (algorithm == BRUTE){
+        bruteForce = BruteForce(problems[0]);
+        moves = bruteForce.sort();
+    }else {
 
-        case 0:
-            bruteForce = BruteForce(problems[0]);
-            moves = bruteForce.sort();
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
+        switch (algorithm) {
+            case BASIC:
+                baseAlgorithm = make_unique<Naive>(problems[0]);
+                break;
+            case PATTERN:
+                baseAlgorithm = make_unique<FourFirst>(problems[0]);
+                break;
+            case FAST:
+                break;
+        }
+
+        baseAlgorithm->sort();
+        moves = baseAlgorithm->_get_move_history();
     }
+
     cout << "Correction check : " << endl;
 
     stepByStep(problems[0], moves);

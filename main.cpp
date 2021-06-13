@@ -41,7 +41,7 @@ void test_benchmark(){
 
     float probability = 0.3f;
 
-    benchmark.runTests(sizes, probability);
+    benchmark.runUser();
 }
 
 int main() {
