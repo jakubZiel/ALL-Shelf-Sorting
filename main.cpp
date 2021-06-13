@@ -2,7 +2,8 @@
 #include "input_generator/input_generator.h"
 #include "benchmark/Benchmark.h"
 #include "algorithms/naive.h"
-
+#include "algorithms/four_first_algorithm.h"
+#include "algorithms/space_sort.h"
 
 void test_input_generator(){
     InputGenerator inputGenerator(15);
@@ -24,6 +25,13 @@ void test_benchmark(){
 
     benchmark.runUser();
 }
+void test_space_sort(){
+    InputGenerator inputGenerator(100);
+    inputGenerator.gen_same_next(0.4);
+    SpaceSort spaceSort(inputGenerator.get_color_vector());
+    spaceSort.sort();
+    spaceSort.show_step_by_step();
+}
 
 void test_brute(){
     std::vector<int> shelf = {1,2,2,3,3,3,1,1,1,0,0,1,2,3,3,2,2,2,1,0};
@@ -33,7 +41,8 @@ void test_brute(){
 }
 
 int main() {
-    test_brute();
+    test_benchmark();
+    test_space_sort();
     return 0;
 }
 

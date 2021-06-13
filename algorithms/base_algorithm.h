@@ -20,6 +20,7 @@ public:
     Base(std::vector<int> &shelf);
     ~Base();
     void _move_to_beg(int color_first_occurrence_index);
+    void _move_to_beg(int color_first_occurrence_index, int start_position);
     void _move(int color_first_occurrence_index);
     void _move_copy(int color_first_occurrence_index);
     virtual void sort() = 0;

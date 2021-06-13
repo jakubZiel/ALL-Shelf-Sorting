@@ -35,150 +35,153 @@ int Base::_find_color_pos(int color) {
     return i;
 }
 void Base::_move_to_beg(int color_first_occurrence_index) {
-    if (color_first_occurrence_index == _first_unsorted_index)
+    _move_to_beg(color_first_occurrence_index, _first_unsorted_index);
+}
+void Base::_move_to_beg(int color_first_occurrence_index, int start_position){
+    if (color_first_occurrence_index == start_position)
         return;
 
-    int num = (_shelf_size - 1) - _first_unsorted_index;
+    int num = (_shelf_size - 1) - start_position;
 
     if (num > 6) {
-        if ((color_first_occurrence_index - _first_unsorted_index) % 4 == 0) {
-            for (int i = 0; i < (color_first_occurrence_index - _first_unsorted_index) / 4; i++) {
-                _move(_first_unsorted_index);
+        if ((color_first_occurrence_index - start_position) % 4 == 0) {
+            for (int i = 0; i < (color_first_occurrence_index - start_position) / 4; i++) {
+                _move(start_position);
             }
         } else {
             if (num % 4 == 0) {
                 if (color_first_occurrence_index + 4 >= _shelf_size) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                     color_first_occurrence_index -= 4;
                 }
 
-                if (color_first_occurrence_index - 3 < _first_unsorted_index) {
+                if (color_first_occurrence_index - 3 < start_position) {
                     _move(color_first_occurrence_index);
                     color_first_occurrence_index = _shelf_size - 4;
                 }
 
                 _move(color_first_occurrence_index - 3);
                 for (int i = 0; i < num / 4; i++) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                 }
             } else if (num % 4 == 1) {
                 if (color_first_occurrence_index + 4 >= _shelf_size) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                     color_first_occurrence_index -= 4;
                 }
 
-                if (color_first_occurrence_index - 2 < _first_unsorted_index) {
+                if (color_first_occurrence_index - 2 < start_position) {
                     _move(color_first_occurrence_index);
                     color_first_occurrence_index = _shelf_size - 4;
                 }
 
                 _move(color_first_occurrence_index - 2);
                 for (int i = 0; i < num / 4; i++) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                 }
             } else if (num % 4 == 2) {
                 if (color_first_occurrence_index + 4 >= _shelf_size) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                     color_first_occurrence_index -= 4;
                 }
 
-                if (color_first_occurrence_index - 1 < _first_unsorted_index) {
+                if (color_first_occurrence_index - 1 < start_position) {
                     _move(color_first_occurrence_index);
                     color_first_occurrence_index = _shelf_size - 4;
                 }
 
                 _move(color_first_occurrence_index - 1);
                 for (int i = 0; i < num / 4; i++) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                 }
             } else {
                 if (color_first_occurrence_index + 4 >= _shelf_size) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                     color_first_occurrence_index -= 4;
                 }
 
                 _move(color_first_occurrence_index);
                 for (int i = 0; i < num / 4; i++) {
-                    _move(_first_unsorted_index);
+                    _move(start_position);
                 }
             }
         }
     } else if (num == 6) {
-        switch (color_first_occurrence_index - _first_unsorted_index) {
+        switch (color_first_occurrence_index - start_position) {
             case 1:
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index);
+                _move(start_position);
+                _move(start_position);
 
                 break;
 
             case 2:
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index + 1);
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index);
+                _move(start_position);
+                _move(start_position + 1);
+                _move(start_position);
+                _move(start_position);
 
                 break;
 
             case 3:
-                _move(_first_unsorted_index + 2);
-                _move(_first_unsorted_index);
+                _move(start_position + 2);
+                _move(start_position);
 
                 break;
 
             case 4:
-                _move(_first_unsorted_index);
+                _move(start_position);
 
                 break;
 
             case 5:
-                _move(_first_unsorted_index + 1);
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index);
+                _move(start_position + 1);
+                _move(start_position);
+                _move(start_position);
 
                 break;
 
             case 6:
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index + 1);
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index);
+                _move(start_position);
+                _move(start_position);
+                _move(start_position + 1);
+                _move(start_position);
+                _move(start_position);
 
                 break;
             default:
                 break;
         }
     } else if (num == 5) {
-        switch (color_first_occurrence_index - _first_unsorted_index) {
+        switch (color_first_occurrence_index - start_position) {
             case 1:
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index + 1);
-                _move(_first_unsorted_index);
+                _move(start_position);
+                _move(start_position + 1);
+                _move(start_position);
 
                 break;
 
             case 2:
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index);
+                _move(start_position);
+                _move(start_position);
 
                 break;
 
             case 3:
-                _move(_first_unsorted_index + 1);
-                _move(_first_unsorted_index);
+                _move(start_position + 1);
+                _move(start_position);
 
                 break;
 
             case 4:
-                _move(_first_unsorted_index);
+                _move(start_position);
 
                 break;
 
             case 5:
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index);
-                _move(_first_unsorted_index + 1);
-                _move(_first_unsorted_index);
+                _move(start_position);
+                _move(start_position);
+                _move(start_position + 1);
+                _move(start_position);
 
                 break;
             default:
