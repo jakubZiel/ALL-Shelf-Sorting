@@ -10,6 +10,8 @@
 #include "input_generator/input_generator.h"
 #include <unordered_map>
 #include <string>
+#include "algorithms/base_algorithm.h"
+#include <memory>
 
 enum Algorithm{
     BRUTE, BASIC, PATTERN, FAST
@@ -27,7 +29,10 @@ class Benchmark {
     std::chrono::time_point<std::chrono::system_clock> startTime;
     std::chrono::time_point<std::chrono::system_clock> endTime;
 
+    // algorithms
     BruteForce bruteForce;
+
+    std::unique_ptr<Base> baseAlgorithm;
 
     std::unordered_map<Algorithm, std::map<int, test_info>> results;
     std::vector<std::vector<int>> problems;

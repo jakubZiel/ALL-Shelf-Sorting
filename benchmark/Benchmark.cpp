@@ -7,11 +7,13 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-
+#include "algorithms/four_first_algorithm.h"
+#include "algorithms/naive.h"
 
 using namespace std;
 
 Benchmark::Benchmark(): bruteForce(0){
+
     for (int algorithm = BRUTE; algorithm <= FAST; algorithm++)
         results.insert(make_pair((Algorithm)algorithm, map<int, test_info>()));
 }
@@ -34,42 +36,40 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
     test_info info;
     vector<int> result;
 
-    switch (algorithm) {
+    if (algorithm == BRUTE){
 
-        case BRUTE:
+        bruteForce = BruteForce(shelf);
 
-            bruteForce = BruteForce(shelf);
+        startTime = chrono::system_clock::now();
+        info.moves = bruteForce.sort();
 
-            startTime = chrono::system_clock::now();
-            info.moves = bruteForce.sort();
+        endTime = chrono::system_clock::now();
 
-            endTime = chrono::system_clock::now();
+        result = bruteForce.restoreState(info.moves);
 
-            result = bruteForce.restoreState(info.moves);
+        info.sorted = validate(result);
+    }else{
 
-            info.sorted = validate(result);
+        switch (algorithm) {
+            case 1:
+                baseAlgorithm = make_unique<Naive>(shelf);
+                break;
+            case 2:
+                baseAlgorithm = make_unique<FourFirst>(shelf);
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
 
-            break;
+        startTime = chrono::system_clock::now();
+        baseAlgorithm->sort();
+        endTime = chrono::system_clock::now();
 
-        case BASIC:
-            startTime = chrono::system_clock::now();
-            endTime = chrono::system_clock::now();
-            break;
-
-        case PATTERN:
-            startTime = chrono::system_clock::now();
-            endTime = chrono::system_clock::now();
-            break;
-
-        case FAST:
-            startTime = chrono::system_clock::now();
-            endTime = chrono::system_clock::now();
-            break;
-
-        default:
-            break;
+        info.moves = baseAlgorithm->_get_move_history();
+        baseAlgorithm.
     }
-
     auto calculationTime = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
     info.calcTime = calculationTime.count();
 
@@ -363,8 +363,6 @@ void Benchmark::runUser(){
         case 3:
             break;
     }
-
-
     cout << "Correction check : " << endl;
 
     stepByStep(problems[0], moves);

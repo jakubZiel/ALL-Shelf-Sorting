@@ -23,7 +23,7 @@ public:
     void _move_copy(int color_first_occurrence_index);
     virtual void sort() = 0;
     void show_step_by_step();
-
+    std::vector<int> _get_move_history();
 
 };
 #endif //SHELF_SORTING_BASE_ALGORITHM_H

@@ -254,3 +254,7 @@ void Base::_print_indicator(int current_index){
     }
     std::cout << std::endl;
 }
+
+std::vector<int> Base::_get_move_history() {
+    return _moves_history;
+}
