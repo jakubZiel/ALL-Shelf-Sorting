@@ -14,7 +14,6 @@ BruteForce::BruteForce(size_t size) {
     for (int i = 0; i < size; i++){
         value = (int) random() % 4;
         counter[value]++;
-
         shelf.push_back(value);
     }
 }
@@ -46,6 +45,14 @@ vector<int> BruteForce::bfs() {
         if (isSorted(currentShelfState)){
             sorted = true;
             return current;
+        }
+
+        endTime = chrono::system_clock::now();
+        auto calculation = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
+
+        if (calculation > 45000) {
+            cout << "brute : over 45s" << endl;
+            break;
         }
 
         for (int pos = 0; pos < currentShelfState.size() - 4; pos++){
