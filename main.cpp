@@ -1,6 +1,7 @@
 #include <iostream>
 #include "algorithms/BruteForce.h"
 #include "input_generator/input_generator.h"
+#include "benchmark/Benchmark.h"
 void test_brute_force(){
     std::vector<int> test = {3,0,0,0,3};
 
@@ -19,18 +20,42 @@ void test_brute_force(){
     auto result = brute.sort();
 
     brute.showStepByStep(result);
+
+    brute.reset();
+
+    brute.setShelf(shelf1);
+
+    result = brute.sort();
+
+    brute.showStepByStep(result);
+
 }
 void test_input_generator(){
     InputGenerator inputGenerator(15);
-    inputGenerator.gen_same_next(0.8);
+    inputGenerator.gen_same_next(0.4);
     auto color_vector = inputGenerator.get_color_vector();
     for (int i = 0; i< 15; i++){
-        std::cout<<color_vector[i]<<std::endl;
+        std::cout<<color_vector[i];
     }
+    std::cout << std::endl;
+}
+
+void test_benchmark(){
+
+    Benchmark benchmark;
+
+    std::vector<int> sizes = {7,10, 12, 13, 14};
+
+    float probability = 0.3f;
+
+    benchmark.runTests(sizes,probability);
+
+
 }
 
 int main() {
-    test_input_generator();
+
+    test_benchmark();
     return 0;
 }
 

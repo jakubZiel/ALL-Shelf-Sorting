@@ -20,6 +20,7 @@ class BruteForce {
     bool sorted = false;
     int visitedCount = 0;
     int queuedCount = 0;
+
     std::chrono::time_point<std::chrono::system_clock> startTime;
     std::chrono::time_point<std::chrono::system_clock> endTime;
 
@@ -38,12 +39,16 @@ public:
     explicit BruteForce(size_t size);
     explicit BruteForce(std::vector<int> &shelf);
 
+    void reset();
+    void setShelf(std::vector<int> &newShelf);
+
     std::vector<int> sort();
     bool isSorted(std::vector<int> &shelfNode);
     void showStepByStep(std::vector<int> &moves);
     static void printShelf(std::vector<int> &shelf);
     static void printIndicator(int pos, int size);
     std::vector<int> restoreState(std::vector<int>& moves);
+
 };
 
 

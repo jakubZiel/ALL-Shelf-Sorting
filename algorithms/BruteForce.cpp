@@ -30,6 +30,8 @@ vector<int> BruteForce::bfs() {
     vector<int> root;
 
     queue.push(root);
+    queuedCount++;
+    visitedCount++;
     visited.insert({boost::hash_value(shelf)});
 
 
@@ -58,9 +60,6 @@ vector<int> BruteForce::bfs() {
                 queue.push(newNode);
                 visitedCount++;
                 queuedCount++;
-
-                if (visitedCount % 100000 == 0)
-                    std::cout << visitedCount << std::endl;
             }
         }
     }
@@ -68,10 +67,6 @@ vector<int> BruteForce::bfs() {
     vector<int> notFound;
     return notFound;
 }
-
-
-
-
 
 vector<int> BruteForce::sort() {
 
@@ -121,17 +116,7 @@ void BruteForce::move(std::vector<int>& shelfNode, int pos) {
 
 
 void BruteForce::showStepByStep(vector<int> &moves) {
-    cout << "visited configurations : " << visited.size() << endl;
-    cout << "calculation time : " << std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count() << endl;
 
-    printShelf(shelf);
-
-    for (auto currMove : moves){
-
-        printIndicator(currMove, shelf.size());
-        move(shelf, currMove);
-        printShelf(shelf);
-    }
 }
 
 void BruteForce::printShelf(vector<int> &shelf){
@@ -163,4 +148,31 @@ vector<int> BruteForce::restoreState(vector<int> &moves) {
     }
 
     return restored;
+}
+
+void BruteForce::reset(){
+
+    sorted = false;
+    visitedCount = 0;
+    queuedCount = 0;
+
+    visited.clear();
+
+    std::queue<vector<int>> empty;
+    queue.swap(empty);
+
+    shelf.clear();
+
+    for (int & i : counter)
+        i = 0;
+}
+
+void BruteForce::setShelf(vector<int> &newShelf) {
+
+    reset();
+
+    shelf = newShelf;
+
+    for (int i : shelf)
+        counter[i]++;
 }

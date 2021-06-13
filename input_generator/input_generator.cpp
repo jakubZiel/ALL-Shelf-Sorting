@@ -1,5 +1,7 @@
 #include "input_generator.h"
 #include <random>
+
+
 InputGenerator::InputGenerator(unsigned int length) : _length(length), _gen(_rd()), _dis(0.0, 1.0){}
 /**
  * Generate vector of colors where the probability that next is the same is equal p.
