@@ -73,11 +73,11 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
         endTime = chrono::system_clock::now();
 
         info.moves = baseAlgorithm->_get_move_history();
-
         result = baseAlgorithm->_get_sorted_shelf();
-
         info.sorted = validate(result);
+
     }
+
     auto calculationTime = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
     info.calcTime = calculationTime.count();
 
@@ -102,22 +102,7 @@ void Benchmark::generateProblems(float probability) {
 
 void Benchmark::runTests(vector<int> &_problemSizes, float probability){
 
-    problemSizes =  _problemSizes;
-
-    generateProblems(probability);
-
-    for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
-
-        for (auto problem : problems){
-
-            test(Algorithm(algorithm), problem);
-
-        }
-    }
-
-    calculateQuality();
-
-    printTestInfo();
+    runAuto(_problemSizes, probability);
 
     checkTestSteps();
 }
@@ -419,6 +404,26 @@ void Benchmark::readData() {
         problemSizes.push_back(problem.size());
         problem.clear();
     }
+}
+
+void Benchmark::runAuto(std::vector<int> &_problemSizes, float probability) {
+
+    problemSizes =  _problemSizes;
+
+    generateProblems(probability);
+
+    for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
+
+        for (auto problem : problems){
+
+            test(Algorithm(algorithm), problem);
+
+        }
+    }
+
+    calculateQuality();
+
+    printTestInfo();
 }
 
 

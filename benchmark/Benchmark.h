@@ -64,6 +64,7 @@ public:
     void runUserInput();
     void runUser();
     void runTests(std::vector<int> &problemSizes, float probability);
+    void runAuto(std::vector<int> &problemSizes, float probability);
 };
 
 

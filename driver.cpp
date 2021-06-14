@@ -22,6 +22,8 @@ int main(int argc, char **argv) {
         std::cin >> defaultSet;
 
         if (!defaultSet) {
+            testSizes.clear();
+
             std::cout << "Choose test sizes, only unique sizes. (-1 to stop)." << std::endl;
 
             std::cin >> size;
@@ -48,11 +50,28 @@ int main(int argc, char **argv) {
         benchmark.runUser();
 
     }else if(strcmp("-help", argv[1]) == 0){
-
+        std::cout << "-auto     : user specifies : int startSize, int step, int howMany, float probability" << std::endl;
         std::cout << "-user     : user specifies probability and problem size, then problem is generated" << std::endl;
         std::cout << "-file     : user inputs problems into data file, first line number of problems, then problems, and then algorithm type" << std::endl;
         std::cout << "-testing  : run all problems and tests performance, user specifies problems sizes and probability" << std::endl;
         std::cout << "-help     : list all possible modes" << std::endl;
+    }else if (strcmp("-auto", argv[1]) == 0){
+
+        int startSize = atoi(argv[2]);
+        int step = atoi(argv[3]);
+        int howMany = atoi(argv[4]);
+        float probability = atof(argv[5]);
+
+        std::vector<int> testSizes;
+
+        int currentSize = startSize;
+
+        for (int i = 0; i < howMany; i++){
+            testSizes.push_back(currentSize);
+            currentSize += step;
+        }
+
+        benchmark.runAuto(testSizes, probability);
     }
 
     return 0;
