@@ -38,8 +38,14 @@ class Benchmark {
     std::unique_ptr<Base> baseAlgorithm;
 
     std::unordered_map<Algorithm, std::map<int, test_info>> results;
+    //_data = {algorithm: {size: { "times" : [ times for different runs], "qvalues":[qvalues for different run]}}
+    std::map<Algorithm, std::map<int, std::map<std::string, std::vector<float>>>> _data;
+    //_statistics = {algorithm: {size: { "mean_time" : mean_time, "std_times": std_time, "mean_qvalue": mean_qvalue, "std_qvalue": std_qvalue}}}
+    std::map<Algorithm, std::map<int, std::map<std::string, float>>> _statistics;
     std::vector<std::vector<int>> problems;
-
+    //input generators {problem_size : InputGenerator}
+    std::map<int, InputGenerator*> input_generators;
+    bool input_generators_initialized;
     std::vector<int> problemSizes;
 
     float calcQ(int medianN, Algorithm algorithm, int size);
@@ -64,7 +70,13 @@ public:
     void runUserInput();
     void runUser();
     void runTests(std::vector<int> &problemSizes, float probability);
-    void runAuto(std::vector<int> &problemSizes, float probability);
+    void runAuto(std::vector<int> &problemSizes, float probability, int repetitions);
+
+    void displayStatistics();
+    void calculateStatistics();
+    void saveData();
+
+    void initialize_input_generators();
 };
 
 

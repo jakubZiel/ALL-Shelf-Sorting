@@ -5,8 +5,8 @@
 
 class InputGenerator {
 private :
-    const int N = 4; // number of different color types
-    const int _length;
+    static const int N = 4; // number of different color types
+    int _length;
     std::vector<int> _colors_vector;
     // random
     std::random_device _rd;  //Will be used to obtain a seed for the random number engine

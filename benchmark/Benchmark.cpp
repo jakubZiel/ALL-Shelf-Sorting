@@ -10,14 +10,19 @@
 #include "algorithms/four_first_algorithm.h"
 #include "algorithms/naive.h"
 #include "algorithms/space_sort.h"
+#include <numeric>
 
 
 using namespace std;
 
-Benchmark::Benchmark(): bruteForce(0){
+Benchmark::Benchmark(): bruteForce(0), _data{
+        {BRUTE, {}}, {BASIC, {}}, {PATTERN, {}}, {FAST, {}}}
+{
 
-    for (int algorithm = BRUTE; algorithm <= FAST; algorithm++)
-        results.insert(make_pair((Algorithm)algorithm, map<int, test_info>()));
+    for (int algorithm = BRUTE; algorithm <= FAST; algorithm++) {
+        results.insert(make_pair((Algorithm) algorithm, map<int, test_info>()));
+    }
+    input_generators_initialized = false;
 }
 
 bool Benchmark::validate(std::vector<int> &shelf) {
@@ -83,16 +88,22 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
 
     results[algorithm].insert(make_pair(shelf.size(), info));
 }
-
+void Benchmark::initialize_input_generators() {
+    if (input_generators_initialized == true)
+        return;
+    for (auto problem_size: problemSizes){
+        input_generators[problem_size] = new InputGenerator(problem_size);
+    }
+    input_generators_initialized = true;
+}
 void Benchmark::generateProblems(float probability) {
 
 
     for (auto& size : problemSizes){
+        initialize_input_generators();
+        input_generators[size]->gen_same_next(probability);
 
-        InputGenerator inputGenerator(size);
-        inputGenerator.gen_same_next(probability);
-
-        auto problem_uns = inputGenerator.get_color_vector();
+        auto problem_uns = input_generators[size]->get_color_vector();
 
         vector<int> problem(problem_uns.begin(), problem_uns.end());
 
@@ -102,7 +113,7 @@ void Benchmark::generateProblems(float probability) {
 
 void Benchmark::runTests(vector<int> &_problemSizes, float probability){
 
-    runAuto(_problemSizes, probability);
+    runAuto(_problemSizes, probability, 1);
 
     checkTestSteps();
 }
@@ -406,24 +417,85 @@ void Benchmark::readData() {
     }
 }
 
-void Benchmark::runAuto(std::vector<int> &_problemSizes, float probability) {
+void Benchmark::runAuto(std::vector<int> &_problemSizes, float probability, int repetitions) {
 
     problemSizes =  _problemSizes;
+    for (int i = 0; i< repetitions; i++){
+        generateProblems(probability);
+        for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
 
-    generateProblems(probability);
+            for (auto problem : problems){
 
-    for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
+                test(Algorithm(algorithm), problem);
 
-        for (auto problem : problems){
+            }
+        }
+        calculateQuality();
+        saveData();
+    }
+    calculateStatistics();
+    displayStatistics();
+}
 
-            test(Algorithm(algorithm), problem);
-
+/**
+ * Calculates mean and std for time and qValue. Data comes from many runs of the program.
+ */
+void Benchmark::calculateStatistics() {
+    for (auto problem_size: problemSizes){
+        for (int algorithm = BRUTE; algorithm < FAST+1; algorithm++){
+            std::vector<string> d_types = {"time", "qvalue"};
+            for (auto d_type: d_types){
+                auto data_vector = _data[static_cast<Algorithm>(algorithm)][problem_size][d_type];
+                float sum = std::accumulate(data_vector.begin(), data_vector.end(), 0.0);
+                float mean = sum / data_vector.size();
+                float sq_sum = std::inner_product(data_vector.begin(), data_vector.end(), data_vector.begin(), 0.0);
+                float stdev = std::sqrt(sq_sum / data_vector.size() - mean * mean);
+                _statistics[static_cast<Algorithm>(algorithm)][problem_size]["mean_"+d_type]=mean;
+                _statistics[static_cast<Algorithm>(algorithm)][problem_size]["std_"+d_type]=stdev;
+            }
+        }
+    }
+}
+/**
+ * Saves data after one run of sorting for all algorithms.
+ */
+void Benchmark::saveData() {
+    for (auto problem_size: problemSizes){
+        for (int algorithm = BRUTE; algorithm < FAST+1; algorithm++){
+            _data[static_cast<Algorithm>(algorithm)][problem_size]["time"].
+            push_back(results[static_cast<Algorithm>(algorithm)][problem_size].calcTime);
+            _data[static_cast<Algorithm>(algorithm)][problem_size]["qvalue"].
+            push_back(results[static_cast<Algorithm>(algorithm)][problem_size].qValue);
         }
     }
 
-    calculateQuality();
 
-    printTestInfo();
+
 }
+void Benchmark::displayStatistics() {
+    for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
+
+        if (algorithm == BRUTE)
+            cout << "Brutal algorithm - O(4^n)" << endl;
+        if (algorithm == BASIC)
+            cout << "Basic algorithm - slow O(n^3)" << endl;
+        if (algorithm == PATTERN)
+            cout << "Pattern algorithm - faster O(n^3)" << endl;
+        if (algorithm == FAST)
+            cout << "Fast algorithm - fast O(n^3)" << endl;
+
+        cout << "size   |   mean_time    |   std_time   |   mean_qvalue   |   std_qvalue" << endl << endl;
+
+        for (auto statistics = _statistics[static_cast<Algorithm>(algorithm)].begin(); statistics != _statistics[static_cast<Algorithm>(algorithm)].end(); statistics++){
+
+            cout << statistics->first << "   "  << fixed << setprecision(0) <<
+            statistics->second["mean_time"]<< "   "  << fixed << setprecision(0)<< statistics->second["std_time"] << "   "
+            << fixed << setprecision(2)<< statistics->second["mean_qvalue"]<<
+            fixed << setprecision(2)<< "   " << statistics->second["std_qvalue"] << endl;
+        }
+        cout << endl << endl;
+    }
+}
+
 
 
