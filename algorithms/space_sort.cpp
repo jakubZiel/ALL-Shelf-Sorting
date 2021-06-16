@@ -25,7 +25,7 @@ void SpaceSort::_make_spaces(const int color) {
     // number of unsorted elements after current color will be sorted
     // so for clarity it's also can be though as number of different color elements that haven't be sorted yet
     // for C it will be number of elements of M Y K
-    // for M it will be number of elements of Y K
+    // fo r M it will be number of elements of Y K
     // for Y it will be number of K elements
     int different_color_unsorted_elem = _shelf_size - _first_unsorted_index - this->_counter[color];
     //number of different color elements sorted in preprocessing

@@ -21,10 +21,11 @@ enum Algorithm{
 };
 
 struct test_info{
-    bool sorted = false;
+    int sorted = 0;
     float calcTime = 0;
     float qValue = 0;
     std::vector<int> moves;
+    int moveCount = 0;
 };
 
 class Benchmark {
@@ -36,8 +37,6 @@ class Benchmark {
     BruteForce bruteForce;
 
     std::unique_ptr<Base> baseAlgorithm;
-
-    std::unordered_map<Algorithm, std::map<int, test_info>> results;
     std::vector<std::vector<int>> problems;
 
     std::vector<int> problemSizes;
@@ -65,6 +64,11 @@ public:
     void runUser();
     void runTests(std::vector<int> &problemSizes, float probability);
     void runAuto(std::vector<int> &problemSizes, float probability);
+
+    std::unordered_map<Algorithm, std::map<int, test_info>> results;
+
+
+    static void printOuterResults(std::unordered_map<int, std::map<int, test_info>> results);
 };
 
 

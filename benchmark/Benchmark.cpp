@@ -49,7 +49,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
             endTime = chrono::system_clock::now();
 
             result = bruteForce.restoreState(info.moves);
-
+            info.moveCount = info.moves.size();
             info.sorted = validate(result);
         }
     }else{
@@ -75,7 +75,7 @@ void Benchmark::test(Algorithm algorithm, std::vector<int> &shelf) {
         info.moves = baseAlgorithm->_get_move_history();
         result = baseAlgorithm->_get_sorted_shelf();
         info.sorted = validate(result);
-
+        info.moveCount = info.moves.size();
     }
 
     auto calculationTime = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
@@ -166,7 +166,7 @@ void Benchmark::printTestInfo(){
         for (auto beg = results[(Algorithm)algorithm].begin(); beg != results[(Algorithm)algorithm].end(); beg++){
 
             cout << beg->first << "   "  << fixed << setprecision(0) << beg->second.calcTime << "   "  << fixed << setprecision(2)
-            << beg->second.qValue << "   " << (beg->second.sorted ? "true" : "false") << "   " << beg->second.moves.size() << endl;
+            << beg->second.qValue << "   " << (beg->second.sorted ? "true" : "false") << "   " << beg->second.moveCount<< endl;
         }
         cout << endl << endl;
     }
@@ -215,8 +215,23 @@ void Benchmark::printIndicator(int pos, int size) {
 }
 
 void Benchmark::printShelf(vector<int> &shelf) {
+    char letter;
     for (auto element : shelf){
-        cout << element;
+        switch (element) {
+            case 0:
+                letter = 'C';
+                break;
+            case 1:
+                letter = 'M';
+                break;
+            case 2:
+                letter = 'Y';
+                break;
+            case 3:
+                letter = 'K';
+                break;
+        }
+        cout << letter;
     }
 
     cout << endl;
@@ -311,6 +326,8 @@ void Benchmark::runUserInput() {
 
             baseAlgorithm->sort();
             info.moves = baseAlgorithm->_get_move_history();
+            info.moveCount = info.moves.size();
+
         }
 
         results[algorithm].insert(make_pair(problem.size(), info));
@@ -426,4 +443,28 @@ void Benchmark::runAuto(std::vector<int> &_problemSizes, float probability) {
     printTestInfo();
 }
 
+
+void Benchmark::printOuterResults(std::unordered_map<int, std::map<int, test_info>> results) {
+
+    for (int algorithm = BRUTE; algorithm <= FAST; algorithm++){
+
+        if (algorithm == BRUTE)
+            cout << "Brutal algorithm - O(4^n)" << endl;
+        if (algorithm == BASIC)
+            cout << "Basic algorithm - slow O(n^3)" << endl;
+        if (algorithm == PATTERN)
+            cout << "Pattern algorithm - faster O(n^3)" << endl;
+        if (algorithm == FAST)
+            cout << "Fast algorithm - fast O(n^3)" << endl;
+
+        cout << "size   |   time    |   q   |   sorted   |   moves" << endl << endl;
+
+        for (auto beg = results[(Algorithm)algorithm].begin(); beg != results[(Algorithm)algorithm].end(); beg++){
+
+            cout << beg->first << "   "  << fixed << setprecision(0) << beg->second.calcTime << "   "  << fixed << setprecision(2)
+                 << beg->second.qValue << "   " << (beg->second.sorted ? "true" : "false") << "   " << beg->second.moveCount<< endl;
+        }
+        cout << endl << endl;
+    }
+}
 
